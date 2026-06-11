@@ -3,15 +3,16 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Walk - gegevens registreren</title>
+    <title>Walk melding</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="syle.css">
   </head>
   <body>
-    <main class="phone" aria-label="Walk gegevens registreren stap 1 van 3">
-      <section class="screen">
+    <main class="phone" aria-label="Walk melding formulier">
+      <section class="screen is-active" data-screen="details">
         <header class="topbar">
           <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="walk">
         </header>
@@ -22,44 +23,55 @@
           <img class="scribble" src="afbeeldingen/pijl.avif" alt="">
         </div>
 
-        <form class="panel" id="detailsForm" novalidate>
+        <form class="panel details-form" id="detailsForm" novalidate>
           <label>
             <span>Naam</span>
-            <input name="name" type="text" placeholder="Sarah Peeters" autocomplete="name" required>
+            <input id="nameInput" name="name" type="text" placeholder="Sarah Peeters" autocomplete="name" required>
           </label>
           <label>
             <span>E-mailadres</span>
-            <input name="email" type="email" placeholder="naam@email.com" autocomplete="email" required>
+            <input id="emailInput" name="email" type="email" placeholder="naam@email.com" autocomplete="email" required>
           </label>
           <label>
             <span>Telefoonnummer</span>
-            <input name="phone" type="tel" placeholder="optioneel" autocomplete="tel" required>
+            <input id="phoneInput" name="phone" type="tel" placeholder="optioneel" autocomplete="tel" required>
           </label>
           <label class="check-row">
-            <input type="checkbox" required>
+            <input id="updatesInput" type="checkbox" required>
             <span>Ik wil updates ontvangen over mijn melding.</span>
           </label>
           <p class="error" id="detailsError">Vul alle gegevens in om verder te gaan.</p>
         </form>
 
         <footer class="actions">
-          <button class="primary" type="button" id="nextButton">locatie toevoegen</button>
+          <button class="primary" type="button" data-next="location">locatie toevoegen</button>
           <button class="link" type="button">Annuleren</button>
+        </footer>
+      </section>
+
+      <section class="screen" data-screen="location">
+        <header class="topbar">
+          <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="walk">
+        </header>
+
+        <div class="hero">
+          <h1>Locatie<br>van obstakel</h1>
+          <img class="walker" src="afbeeldingen/meisjewandeld.png" alt="">
+          <img class="scribble" src="afbeeldingen/pijl.avif" alt="">
+        </div>
+
+        <div class="panel map-panel">
+          <div id="brusselsMap" class="brussels-map" aria-label="Interactieve kaart van Brussel"></div>
+        </div>
+
+        <footer class="actions">
+          <button class="primary" type="button">soort obstakel</button>
+          <button class="link" type="button" data-prev="details">Vorige</button>
         </footer>
       </section>
     </main>
 
-    <script>
-      const form = document.querySelector('#detailsForm');
-      const error = document.querySelector('#detailsError');
-      document.querySelector('#nextButton').addEventListener('click', () => {
-        const valid = form.checkValidity();
-        error.classList.toggle('is-visible', !valid);
-        form.querySelectorAll('input').forEach((input) => {
-          input.toggleAttribute('aria-invalid', !input.checkValidity());
-        });
-      });
-    </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
   </body>
-</html>
 </html>

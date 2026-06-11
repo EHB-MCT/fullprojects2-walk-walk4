@@ -4,7 +4,6 @@
   --red: #E26142;
   --paper: #F8F4EC;
   --line: #E8C994;
-  --button: #EA724F;
   font-family: "GT Eesti Display", "Nunito Sans", Arial, sans-serif;
 }
 
@@ -32,6 +31,7 @@ input {
 }
 
 .phone {
+  position: relative;
   width: min(100vw, 390px);
   height: min(100vh, 820px);
   min-height: 720px;
@@ -40,11 +40,24 @@ input {
 }
 
 .screen {
-  position: relative;
-  display: grid;
+  position: absolute;
+  inset: 0;
+  display: none;
   grid-template-rows: 68px 185px 1fr auto;
   min-height: 100%;
   background: var(--yellow);
+  --bar-w: 74px;
+  --walker-x: 28px;
+  --walker-y: -28px;
+}
+
+.screen.is-active {
+  display: grid;
+}
+
+.screen[data-screen="location"] {
+  --bar-w: 132px;
+  --walker-x: 78px;
 }
 
 .topbar {
@@ -68,6 +81,7 @@ input {
 .hero h1 {
   position: relative;
   z-index: 6;
+  max-width: 300px;
   margin: 0;
   color: var(--purple);
   font-family: "GT Eesti Display UltraBold", "GT Eesti Display", "Nunito Sans", Arial, sans-serif;
@@ -80,8 +94,8 @@ input {
 .walker {
   position: absolute;
   z-index: 7;
-  left: 15px;
-  bottom: -23px;
+  left: calc(var(--walker-x) - 12px);
+  bottom: calc(var(--walker-y) + 5px);
   width: 94px;
   height: auto;
   pointer-events: none;
@@ -101,10 +115,8 @@ input {
 .panel {
   position: relative;
   z-index: 4;
-  align-self: start;
   width: calc(100% - 54px);
   margin: 0 auto;
-  padding: 20px 19px 16px;
   overflow: hidden;
   background: var(--paper);
   border-radius: 24px 24px 0 0;
@@ -113,11 +125,17 @@ input {
 .panel::before {
   content: "";
   position: absolute;
-  inset: 0 auto auto 0;
-  width: 74px;
+  left: 0;
+  top: 0;
+  width: var(--bar-w);
   height: 11px;
   background: var(--red);
   border-radius: 24px 0 0 0;
+}
+
+.details-form {
+  align-self: start;
+  padding: 20px 19px 16px;
 }
 
 label {
@@ -199,7 +217,7 @@ input::placeholder {
   width: 100%;
   height: 53px;
   border: 0;
-  background: var(--button);
+  background: var(--red);
   color: #fff;
   font-size: 16px;
   font-weight: 900;
@@ -212,6 +230,47 @@ input::placeholder {
   color: var(--purple);
   font-size: 13px;
   cursor: pointer;
+}
+
+.map-panel {
+  display: grid;
+  place-items: center;
+  padding: 30px 34px 27px;
+}
+
+.brussels-map {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #f5f2e8;
+}
+
+.brussels-map .leaflet-control-zoom {
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.brussels-map .leaflet-control-zoom a {
+  color: var(--purple);
+  font-family: "GT Eesti Display", "Nunito Sans", Arial, sans-serif;
+  font-weight: 900;
+}
+
+.brussels-map .leaflet-control-attribution {
+  font-size: 8px;
+}
+
+.walk-marker {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--red);
+  border-radius: 50%;
+  background: rgba(226, 97, 66, .85);
+  box-shadow: 0 0 0 18px rgba(64, 145, 183, .26);
 }
 
 @media (max-height: 760px) {
@@ -230,6 +289,9 @@ input::placeholder {
 
   .panel {
     width: calc(100% - 48px);
+  }
+
+  .details-form {
     padding-top: 17px;
   }
 
