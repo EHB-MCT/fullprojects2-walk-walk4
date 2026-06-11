@@ -1,77 +1,150 @@
 <!doctype html>
 <html lang="nl">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Walk melding</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="syle.css">
-  </head>
-  <body>
-    <main class="phone" aria-label="Walk melding formulier">
-      <section class="screen is-active" data-screen="details">
-        <header class="topbar">
-          <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="walk">
-        </header>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Walk - gegevens registreren</title>
 
-        <div class="hero">
-          <h1>Gegevens<br>registreren.</h1>
-          <img class="walker" src="afbeeldingen/meisjewandeld.png" alt="">
-          <img class="scribble" src="afbeeldingen/pijl.avif" alt="">
-        </div>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
 
-        <form class="panel details-form" id="detailsForm" novalidate>
-          <label>
-            <span>Naam</span>
-            <input id="nameInput" name="name" type="text" placeholder="Sarah Peeters" autocomplete="name" required>
-          </label>
-          <label>
-            <span>E-mailadres</span>
-            <input id="emailInput" name="email" type="email" placeholder="naam@email.com" autocomplete="email" required>
-          </label>
-          <label>
-            <span>Telefoonnummer</span>
-            <input id="phoneInput" name="phone" type="tel" placeholder="optioneel" autocomplete="tel" required>
-          </label>
-          <label class="check-row">
-            <input id="updatesInput" type="checkbox" required>
-            <span>Ik wil updates ontvangen over mijn melding.</span>
-          </label>
-          <p class="error" id="detailsError">Vul alle gegevens in om verder te gaan.</p>
-        </form>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  >
+  <link rel="stylesheet" href="syle.css">
+</head>
 
-        <footer class="actions">
-          <button class="primary" type="button" data-next="location">locatie toevoegen</button>
-          <button class="link" type="button">Annuleren</button>
-        </footer>
+<body>
+  <main class="phone" aria-label="Walk melding formulier">
+
+    <section class="screen is-active" data-screen="details">
+      <header class="topbar">
+        <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="Walk logo">
+      </header>
+
+      <div class="hero">
+        <h1>Gegevens<br>registreren.</h1>
+
+        <img
+          class="walker"
+          src="afbeeldingen/meisjewandeld.png"
+          alt=""
+        >
+
+        <img
+          class="scribble"
+          src="afbeeldingen/pijl.avif"
+          alt=""
+        >
+      </div>
+
+      <form class="panel details-form" id="detailsForm" novalidate>
+        <label for="nameInput">
+          <span>Naam</span>
+          <input
+            id="nameInput"
+            name="name"
+            type="text"
+            placeholder="naam achternaam"
+            autocomplete="name"
+            required
+          >
+        </label>
+
+        <label for="emailInput">
+          <span>E-mailadres</span>
+          <input
+            id="emailInput"
+            name="email"
+            type="email"
+            placeholder="naam@email.com"
+            autocomplete="email"
+            required
+          >
+        </label>
+
+        <label for="phoneInput">
+          <span>Telefoonnummer</span>
+          <input
+            id="phoneInput"
+            name="phone"
+            type="tel"
+            placeholder="telefoonnumer"
+            autocomplete="tel"
+            required
+          >
+        </label>
+
+        <label class="check-row" for="updatesInput">
+          <input
+            id="updatesInput"
+            name="updates"
+            type="checkbox"
+            required
+          >
+          <span>Ik wil updates ontvangen over mijn melding.</span>
+        </label>
+
+        <p class="error" id="detailsError">
+          Vul alle gegevens in om verder te gaan.
+        </p>
+      </form>
+
+      <footer class="actions">
+        <button class="primary" type="button" data-next="location">
+          Locatie toevoegen
+        </button>
+
+        <button class="link" type="button">
+          Annuleren
+        </button>
+      </footer>
+    </section>
+
+
+    <section class="screen" data-screen="location">
+      <header class="topbar">
+        <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="Walk logo">
+      </header>
+
+      <div class="hero">
+        <h1>Duid de<br>locatie aan.</h1>
+
+        <img
+          class="walker"
+          src="afbeeldingen/meisjewandeld.png"
+          alt=""
+        >
+
+        <img
+          class="scribble"
+          src="afbeeldingen/pijl.avif"
+          alt=""
+        >
+      </div>
+
+      <section class="panel map-panel">
+        <div id="brusselsMap" class="brussels-map"></div>
       </section>
 
-      <section class="screen" data-screen="location">
-        <header class="topbar">
-          <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="walk">
-        </header>
+      <footer class="actions">
+        <button class="primary" type="button">
+          Melding versturen
+        </button>
 
-        <div class="hero">
-          <h1>Locatie<br>van obstakel</h1>
-          <img class="walker" src="afbeeldingen/meisjewandeld.png" alt="">
-          <img class="scribble" src="afbeeldingen/pijl.avif" alt="">
-        </div>
+        <button class="link" type="button" data-prev="details">
+          Terug
+        </button>
+      </footer>
+    </section>
 
-        <div class="panel map-panel">
-          <div id="brusselsMap" class="brussels-map" aria-label="Interactieve kaart van Brussel"></div>
-        </div>
+  </main>
 
-        <footer class="actions">
-          <button class="primary" type="button">soort obstakel</button>
-          <button class="link" type="button" data-prev="details">Vorige</button>
-        </footer>
-      </section>
-    </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js"></script>
-  </body>
+
+  <script src="script.js"></script>
+</body>
 </html>
