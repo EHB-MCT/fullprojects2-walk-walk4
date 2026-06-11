@@ -60,6 +60,11 @@ input {
   --walker-x: 78px;
 }
 
+.screen[data-screen="category"] {
+  --bar-w: 176px;
+  --walker-x: 122px;
+}
+
 .topbar {
   display: grid;
   place-items: center;
@@ -271,6 +276,29 @@ input::placeholder {
   border-radius: 50%;
   background: rgba(226, 97, 66, .85);
   box-shadow: 0 0 0 18px rgba(64, 145, 183, .26);
+}
+
+.category-panel {
+  display: grid;
+  grid-template-columns: repeat(2, 68px);
+  justify-content: center;
+  gap: 25px 56px;
+  padding: 36px 0 38px;
+}
+
+.category {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: #111;
+  cursor: pointer;
+}
+
+.category.is-selected {
+  outline: 3px solid rgba(226, 97, 66, .35);
 }
 
 @media (max-height: 760px) {

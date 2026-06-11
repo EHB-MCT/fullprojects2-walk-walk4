@@ -81,6 +81,15 @@ function validateDetails() {
 document.addEventListener("click", (event) => {
   const next = event.target.closest("[data-next]");
   const prev = event.target.closest("[data-prev]");
+  const category = event.target.closest(".category");
+
+  if (category) {
+    document.querySelectorAll(".category").forEach((button) => {
+      button.classList.remove("is-selected");
+    });
+
+    category.classList.add("is-selected");
+  }
 
   if (next) {
     if (next.dataset.next === "location" && !validateDetails()) {
