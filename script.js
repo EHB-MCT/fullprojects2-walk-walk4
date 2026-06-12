@@ -1,24 +1,74 @@
-const screens = Array.from(document.querySelectorAll(".screen"));
-const detailsForm = document.querySelector("#detailsForm");
-const detailsError = document.querySelector("#detailsError");
-const nameInput = document.querySelector("#nameInput");
-const emailInput = document.querySelector("#emailInput");
-const phoneInput = document.querySelector("#phoneInput");
-const updatesInput = document.querySelector("#updatesInput");
-const photoInput = document.querySelector("#photoInput");
-const photoPreview = document.querySelector("#photoPreview");
-const uploadBox = document.querySelector(".upload-box");
-const thanksName = document.querySelector("#thanksName");
-const summaryName = document.querySelector("#summaryName");
-const summaryType = document.querySelector("#summaryType");
-const summaryPhoto = document.querySelector("#summaryPhoto");
-const photoCard = document.querySelector(".photo-card");
-const brusselsCenter = [50.8467, 4.3525];
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+const defaultCategory = "Auto";
+const categories = [defaultCategory, "Step", "Vuilbak", "Afval", "Bord", "Terras"];
+const screenTitles = {
+  details: "Gegevens<br>registreren.",
+  location: "Duid de<br>locatie aan.",
+  category: "Kies een<br>categorie",
+  proof: "Dien een<br>foto in",
+  thanks: 'Bedankt <span id="thanksName">Victor</span>,<br>jouw melding<br>maakt verschil!'
+};
 
-let brusselsMap;
-let impactMap;
+renderScreenChrome();
+renderCategories();
+
+const screens = $$(".screen");
+const [
+  detailsForm, detailsError, nameInput, emailInput, phoneInput, updatesInput,
+  photoInput, photoPreview, thanksName, summaryName, summaryType,
+  summaryLocation, summaryPhoto, addressInput, gpsButton
+] = [
+  "detailsForm", "detailsError", "nameInput", "emailInput", "phoneInput",
+  "updatesInput", "photoInput", "photoPreview", "thanksName", "summaryName",
+  "summaryType", "summaryLocation", "summaryPhoto", "addressInput", "gpsButton"
+].map((id) => $(`#${id}`));
+const [uploadBox, photoCard] = [".upload-box", ".photo-card"].map($);
+const detailInputs = [nameInput, emailInput, phoneInput, updatesInput];
+const brusselsCenter = [50.8467, 4.3525];
+const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+const disabledMapOptions = Object.fromEntries(
+  ["dragging", "scrollWheelZoom", "doubleClickZoom", "boxZoom", "keyboard", "tap", "touchZoom"]
+    .map((option) => [option, false])
+);
+
+let brusselsMap, impactMap, reportMarker, userLocationMarker, impactMarker;
 let photoUrl = "";
-let selectedCategory = "Auto";
+let selectedCategory = defaultCategory;
+let selectedLocation = [...brusselsCenter];
+
+function renderScreenChrome() {
+  $$(".screen").forEach((screen) => {
+    if (screen.firstElementChild?.classList.contains("topbar")) {
+      return;
+    }
+
+    const name = screen.dataset.screen;
+
+    screen.insertAdjacentHTML("afterbegin", `
+      <header class="topbar">
+        <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="Walk logo">
+      </header>
+      <div class="hero${name === "thanks" ? " compact" : ""}">
+        <h1>${screenTitles[name]}</h1>
+        <img class="walker" src="afbeeldingen/meisjewandeld.png" alt="">
+        <img class="scribble" src="afbeeldingen/pijl.avif" alt="">
+      </div>
+    `);
+  });
+}
+
+function renderCategories() {
+  $("#categoryPanel").innerHTML = categories.map((category) => `
+    <button
+      class="category${category === defaultCategory ? " is-selected" : ""}"
+      type="button"
+      data-category="${category}"
+      aria-label="${category}"
+      style="--category-icon:url(afbeeldingen/iconen/${category.toLowerCase()}.png)"
+    ></button>
+  `).join("");
+}
 
 function showScreen(name) {
   const targetScreen = screens.find((screen) => screen.dataset.screen === name);
@@ -33,19 +83,25 @@ function showScreen(name) {
 
   if (name === "location") {
     initBrusselsMap();
-    window.setTimeout(() => brusselsMap?.invalidateSize(), 80);
+    invalidateMap(brusselsMap);
   }
 
   if (name === "thanks") {
     initImpactMap();
-    window.setTimeout(() => impactMap?.invalidateSize(), 80);
+    invalidateMap(impactMap);
   }
 }
 
-function initBrusselsMap() {
-  const mapElement = document.querySelector("#brusselsMap");
+function invalidateMap(map) {
+  window.setTimeout(() => map?.invalidateSize(), 80);
+}
 
-  if (brusselsMap || !mapElement || !window.L) {
+function initBrusselsMap() {
+  if (brusselsMap) {
+    return syncReportMarker();
+  }
+
+  if (!$("#brusselsMap") || !window.L) {
     return;
   }
 
@@ -58,54 +114,132 @@ function initBrusselsMap() {
     attributionControl: true
   });
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
+  addTileLayer(brusselsMap, {
     attribution: "&copy; OpenStreetMap"
-  }).addTo(brusselsMap);
+  });
 
-  L.marker(brusselsCenter, {
-    icon: createWalkIcon(),
+  reportMarker = L.marker(selectedLocation, {
+    icon: createMarkerIcon("walk-marker", [44, 44]),
     draggable: true
   })
     .addTo(brusselsMap)
-    .bindPopup("Brussel");
+    .bindPopup("Locatie van je melding");
+
+  reportMarker.on("dragend", () => {
+    const markerLocation = reportMarker.getLatLng();
+    setSelectedLocation([markerLocation.lat, markerLocation.lng]);
+  });
+
+  brusselsMap.on("click", (event) => {
+    setSelectedLocation([event.latlng.lat, event.latlng.lng]);
+  });
 }
 
 function initImpactMap() {
-  if (impactMap || !window.L) {
+  if (impactMap) {
+    return syncImpactMap();
+  }
+
+  if (!window.L) {
     return;
   }
 
   impactMap = L.map("impactMap", {
-    center: brusselsCenter,
+    center: selectedLocation,
     zoom: 12,
     zoomControl: false,
     attributionControl: false,
-    dragging: false,
-    scrollWheelZoom: false,
-    doubleClickZoom: false,
-    boxZoom: false,
-    keyboard: false,
-    tap: false,
-    touchZoom: false
+    ...disabledMapOptions
   });
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19
-  }).addTo(impactMap);
+  addTileLayer(impactMap);
 
-  L.marker(brusselsCenter, {
-    icon: createWalkIcon(),
+  impactMarker = L.marker(selectedLocation, {
+    icon: createMarkerIcon("walk-marker", [44, 44]),
     interactive: false
   }).addTo(impactMap);
 }
 
-function createWalkIcon() {
+function setSelectedLocation(location) {
+  selectedLocation = [location[0], location[1]];
+  syncReportMarker();
+  syncImpactMap();
+}
+
+function syncReportMarker() {
+  reportMarker?.setLatLng(selectedLocation);
+}
+
+function syncImpactMap() {
+  impactMarker?.setLatLng(selectedLocation);
+  impactMap?.setView(selectedLocation, 12);
+}
+
+function resetLocation() {
+  setSelectedLocation(brusselsCenter);
+  addressInput.value = "";
+  gpsButton.disabled = false;
+
+  brusselsMap?.setView(brusselsCenter, 13);
+
+  userLocationMarker?.remove();
+  userLocationMarker = undefined;
+}
+
+function requestUserLocation() {
+  if (!brusselsMap || !window.L || !navigator.geolocation) {
+    return;
+  }
+
+  gpsButton.disabled = true;
+
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const personLocation = [
+        position.coords.latitude,
+        position.coords.longitude
+      ];
+
+      setSelectedLocation(personLocation);
+      syncUserLocationMarker(personLocation);
+
+      brusselsMap.setView(personLocation, Math.max(brusselsMap.getZoom(), 16));
+      gpsButton.disabled = false;
+    },
+    () => {
+      gpsButton.disabled = false;
+    },
+    {
+      enableHighAccuracy: true,
+      maximumAge: 60000,
+      timeout: 10000
+    }
+  );
+}
+
+function syncUserLocationMarker(location) {
+  userLocationMarker ??= L.marker(location, {
+    icon: createMarkerIcon("person-marker", [24, 24])
+  })
+    .addTo(brusselsMap)
+    .bindPopup("Jouw GPS-locatie");
+
+  userLocationMarker.setLatLng(location);
+}
+
+function addTileLayer(map, options = {}) {
+  L.tileLayer(tileUrl, {
+    maxZoom: 19,
+    ...options
+  }).addTo(map);
+}
+
+function createMarkerIcon(className, iconSize) {
   return L.divIcon({
-    className: "",
-    html: '<span class="walk-marker"></span>',
-    iconSize: [20, 20],
-    iconAnchor: [10, 10]
+    className: `${className}-shell`,
+    html: `<span class="${className}"></span>`,
+    iconSize,
+    iconAnchor: iconSize.map((value) => value / 2)
   });
 }
 
@@ -114,11 +248,9 @@ function validateDetails() {
 
   detailsError.classList.toggle("is-visible", !valid);
 
-  [nameInput, emailInput, phoneInput].forEach((input) => {
+  detailInputs.forEach((input) => {
     input.toggleAttribute("aria-invalid", !input.checkValidity());
   });
-
-  updatesInput.toggleAttribute("aria-invalid", !updatesInput.checkValidity());
 
   return valid;
 }
@@ -129,6 +261,7 @@ function updateSummary() {
   thanksName.textContent = firstName;
   summaryName.textContent = firstName;
   summaryType.textContent = selectedCategory;
+  summaryLocation.textContent = addressInput.value.trim() || "Brussel";
 
   if (photoUrl) {
     summaryPhoto.src = photoUrl;
@@ -136,19 +269,48 @@ function updateSummary() {
   }
 }
 
+function selectCategory(categoryName = defaultCategory) {
+  selectedCategory = categoryName;
+
+  $$(".category").forEach((button) => {
+    button.classList.toggle("is-selected", button.dataset.category === categoryName);
+  });
+}
+
+function clearPhoto() {
+  photoInput.value = "";
+  [photoPreview, summaryPhoto].forEach((image) => image.removeAttribute("src"));
+  [uploadBox, photoCard].forEach((element) => element.classList.remove("has-photo"));
+
+  if (photoUrl) {
+    URL.revokeObjectURL(photoUrl);
+    photoUrl = "";
+  }
+}
+
+function resetReport() {
+  detailsForm.reset();
+  detailsError.classList.remove("is-visible");
+  clearPhoto();
+  selectCategory();
+  resetLocation();
+  showScreen("details");
+}
+
 document.addEventListener("click", (event) => {
   const next = event.target.closest("[data-next]");
   const prev = event.target.closest("[data-prev]");
   const category = event.target.closest(".category");
   const reset = event.target.closest("[data-reset]");
+  const gps = event.target.closest("#gpsButton");
+
+  if (gps) {
+    requestUserLocation();
+    return;
+  }
 
   if (category) {
-    document.querySelectorAll(".category").forEach((button) => {
-      button.classList.remove("is-selected");
-    });
-
-    category.classList.add("is-selected");
-    selectedCategory = category.dataset.category;
+    selectCategory(category.dataset.category);
   }
 
   if (next) {
@@ -168,29 +330,11 @@ document.addEventListener("click", (event) => {
   }
 
   if (reset) {
-    detailsForm.reset();
-    detailsError.classList.remove("is-visible");
-    photoInput.value = "";
-    photoPreview.removeAttribute("src");
-    summaryPhoto.removeAttribute("src");
-    uploadBox.classList.remove("has-photo");
-    photoCard.classList.remove("has-photo");
-
-    if (photoUrl) {
-      URL.revokeObjectURL(photoUrl);
-      photoUrl = "";
-    }
-
-    selectedCategory = "Auto";
-    document.querySelectorAll(".category").forEach((button) => {
-      button.classList.toggle("is-selected", button.dataset.category === "Auto");
-    });
-
-    showScreen("details");
+    resetReport();
   }
 });
 
-[nameInput, emailInput, phoneInput, updatesInput].forEach((input) => {
+detailInputs.forEach((input) => {
   input.addEventListener("input", () => {
     if (detailsError.classList.contains("is-visible")) {
       validateDetails();

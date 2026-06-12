@@ -4,321 +4,110 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Walk - gegevens registreren</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
-
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  >
-  <link rel="stylesheet" href="syle.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="syle.css?v=2">
 </head>
-
 <body>
   <main class="phone" aria-label="Walk melding formulier">
-
     <section class="screen is-active" data-screen="details">
-      <header class="topbar">
-        <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="Walk logo">
-      </header>
-
-      <div class="hero">
-        <h1>Gegevens<br>registreren.</h1>
-
-        <img
-          class="walker"
-          src="afbeeldingen/meisjewandeld.png"
-          alt=""
-        >
-
-        <img
-          class="scribble"
-          src="afbeeldingen/pijl.avif"
-          alt=""
-        >
-      </div>
-
       <form class="panel details-form" id="detailsForm" novalidate>
         <label for="nameInput">
           <span>Naam</span>
-          <input
-            id="nameInput"
-            name="name"
-            type="text"
-            placeholder="naam achternaam"
-            autocomplete="name"
-            required
-          >
+          <input id="nameInput" name="name" type="text" placeholder="naam achternaam" autocomplete="name" required>
         </label>
-
         <label for="emailInput">
           <span>E-mailadres</span>
-          <input
-            id="emailInput"
-            name="email"
-            type="email"
-            placeholder="naam@email.com"
-            autocomplete="email"
-            required
-          >
+          <input id="emailInput" name="email" type="email" placeholder="naam@email.com" autocomplete="email" required>
         </label>
-
         <label for="phoneInput">
           <span>Telefoonnummer</span>
-          <input
-            id="phoneInput"
-            name="phone"
-            type="tel"
-            placeholder="telefoonnumer"
-            autocomplete="tel"
-            required
-          >
+          <input id="phoneInput" name="phone" type="tel" placeholder="telefoonnumer" autocomplete="tel" required>
         </label>
-
         <label class="check-row" for="updatesInput">
-          <input
-            id="updatesInput"
-            name="updates"
-            type="checkbox"
-            required
-          >
+          <input id="updatesInput" name="updates" type="checkbox" required>
           <span>Ik wil updates ontvangen over mijn melding.</span>
         </label>
-
-        <p class="error" id="detailsError">
-          Vul alle gegevens in om verder te gaan.
-        </p>
+        <p class="error" id="detailsError">Vul alle gegevens in om verder te gaan.</p>
       </form>
-
       <footer class="actions">
-        <button class="primary" type="button" data-next="location">
-          Locatie toevoegen
-        </button>
-
-        <button class="link" type="button">
-          Annuleren
-        </button>
+        <button class="primary" type="button" data-next="location">Locatie toevoegen</button>
       </footer>
     </section>
-
 
     <section class="screen" data-screen="location">
-      <header class="topbar">
-        <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="Walk logo">
-      </header>
-
-      <div class="hero">
-        <h1>Duid de<br>locatie aan.</h1>
-
-        <img
-          class="walker"
-          src="afbeeldingen/meisjewandeld.png"
-          alt=""
-        >
-
-        <img
-          class="scribble"
-          src="afbeeldingen/pijl.avif"
-          alt=""
-        >
-      </div>
-
       <section class="panel map-panel">
         <div id="brusselsMap" class="brussels-map"></div>
+        <div class="location-tools">
+          <button class="gps-button" id="gpsButton" type="button"><span aria-hidden="true"></span>Gebruik GPS-locatie</button>
+          <label class="address-field" for="addressInput">
+            <span>Adres</span>
+            <input id="addressInput" name="address" type="text" placeholder="straat en nummer, Brussel" autocomplete="street-address">
+          </label>
+        </div>
       </section>
-
       <footer class="actions">
-        <button class="primary" type="button" data-next="category">
-          Soort obstakel
-        </button>
-
-        <button class="link" type="button" data-prev="details">
-          Terug
-        </button>
+        <button class="primary" type="button" data-next="category">Soort obstakel</button>
+        <button class="link" type="button" data-prev="details">Terug</button>
       </footer>
     </section>
-
 
     <section class="screen" data-screen="category">
-      <header class="topbar">
-        <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="Walk logo">
-      </header>
-
-      <div class="hero">
-        <h1>Kies een<br>categorie</h1>
-
-        <img
-          class="walker"
-          src="afbeeldingen/meisjewandeld.png"
-          alt=""
-        >
-
-        <img
-          class="scribble"
-          src="afbeeldingen/pijl.avif"
-          alt=""
-        >
-      </div>
-
-      <section class="panel category-panel">
-        <button class="category is-selected" type="button" data-category="Auto" aria-label="Auto"></button>
-
-        <button class="category" type="button" data-category="Step" aria-label="Step"></button>
-
-        <button class="category" type="button" data-category="Vuilbak" aria-label="Vuilbak"></button>
-
-        <button class="category" type="button" data-category="Afval" aria-label="Afval"></button>
-
-        <button class="category" type="button" data-category="Bord" aria-label="Bord"></button>
-
-        <button class="category" type="button" data-category="Terras" aria-label="Terras"></button>
-      </section>
-
+      <section class="panel category-panel" id="categoryPanel"></section>
       <footer class="actions">
-        <button class="primary" type="button" data-next="proof">
-          Bewijs toevoegen
-        </button>
-
-        <button class="link" type="button" data-prev="location">
-          Terug
-        </button>
+        <button class="primary" type="button" data-next="proof">Bewijs toevoegen</button>
+        <button class="link" type="button" data-prev="location">Terug</button>
       </footer>
     </section>
 
-
     <section class="screen" data-screen="proof">
-      <header class="topbar">
-        <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="Walk logo">
-      </header>
-
-      <div class="hero">
-        <h1>Dien een<br>foto in</h1>
-
-        <img
-          class="walker"
-          src="afbeeldingen/meisjewandeld.png"
-          alt=""
-        >
-
-        <img
-          class="scribble"
-          src="afbeeldingen/pijl.avif"
-          alt=""
-        >
-      </div>
-
       <section class="panel proof-panel">
         <label class="upload-box" for="photoInput">
-          <input
-            id="photoInput"
-            type="file"
-            accept="image/*"
-            capture="environment"
-          >
+          <input id="photoInput" type="file" accept="image/*" capture="environment">
           <img id="photoPreview" alt="">
           <span>Voeg foto toe/ Maak foto</span>
         </label>
-
         <label class="extra-info" for="extraInput">
           <span>extra info</span>
           <input id="extraInput" type="text" placeholder="optioneel">
         </label>
       </section>
-
       <footer class="actions">
-        <button class="primary" type="button" data-next="thanks">
-          Inzending bevestigen
-        </button>
-
-        <button class="link" type="button" data-prev="category">
-          Terug
-        </button>
+        <button class="primary" type="button" data-next="thanks">Inzending bevestigen</button>
+        <button class="link" type="button" data-prev="category">Terug</button>
       </footer>
     </section>
 
-
     <section class="screen" data-screen="thanks">
-      <header class="topbar">
-        <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="Walk logo">
-      </header>
-
-      <div class="hero compact">
-        <h1>
-          Bedankt <span id="thanksName">Victor</span>,<br>jouw melding<br>maakt verschil!
-        </h1>
-
-        <img
-          class="walker"
-          src="afbeeldingen/meisjewandeld.png"
-          alt=""
-        >
-
-        <img
-          class="scribble"
-          src="afbeeldingen/pijl.avif"
-          alt=""
-        >
-      </div>
-
       <div class="thanks-stack">
         <article class="white-card intro-card">
-          <p>
-            Bedankt om mee te helpen aan meer open en veiligere stoepen in Brussel.
-          </p>
-          <p>
-            Jouw melding is toegevoegd aan de kaart en telt mee in de cijfers van deze maand.
-          </p>
+          <p>Bedankt om mee te helpen aan meer open en veiligere stoepen in Brussel.</p>
+          <p>Jouw melding is toegevoegd aan de kaart en telt mee in de cijfers van deze maand.</p>
         </article>
-
         <article class="white-card summary-card">
           <dl>
-            <div>
-              <dt>Naam:</dt>
-              <dd id="summaryName">Victor</dd>
-            </div>
-            <div>
-              <dt>Locatie:</dt>
-              <dd>Brussel</dd>
-            </div>
-            <div>
-              <dt>Type:</dt>
-              <dd id="summaryType">Auto</dd>
-            </div>
+            <div><dt>Naam:</dt><dd id="summaryName">Victor</dd></div>
+            <div><dt>Locatie:</dt><dd id="summaryLocation">Brussel</dd></div>
+            <div><dt>Type:</dt><dd id="summaryType">Auto</dd></div>
           </dl>
-
           <div class="photo-card">
             <img id="summaryPhoto" alt="">
             <span>Jouw foto<br>obstakel</span>
           </div>
         </article>
-
         <article class="white-card impact-card">
-          <strong>
-            Jouw melding<br>staat er bij.<br>Samen maken we<br>Brussel<br>stap voor stap beter<br>bewandelbaar.
-          </strong>
-
-          <div
-            id="impactMap"
-            class="impact-map"
-            aria-label="Kaartfoto van Brussel"
-          ></div>
+          <strong>Jouw melding<br>staat er bij.<br>Samen maken we<br>Brussel<br>stap voor stap beter<br>bewandelbaar.</strong>
+          <div id="impactMap" class="impact-map" aria-label="Kaartfoto van Brussel"></div>
         </article>
       </div>
-
       <footer class="actions">
-        <button class="primary" type="button" data-reset>
-          Nieuwe melding maken
-        </button>
+        <button class="primary" type="button" data-reset>Nieuwe melding maken</button>
       </footer>
     </section>
-
   </main>
-
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 </html>

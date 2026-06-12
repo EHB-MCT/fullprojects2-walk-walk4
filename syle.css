@@ -30,6 +30,16 @@ input {
   font: inherit;
 }
 
+.topbar,
+.category,
+.upload-box,
+.photo-card,
+.walk-marker-shell,
+.person-marker-shell {
+  display: grid;
+  place-items: center;
+}
+
 .phone {
   position: relative;
   width: min(100vw, 390px);
@@ -77,8 +87,6 @@ input {
 }
 
 .topbar {
-  display: grid;
-  place-items: center;
   background: var(--paper);
 }
 
@@ -233,35 +241,43 @@ input::placeholder {
   margin: 22px auto 10px;
 }
 
+.primary,
+.link {
+  border: 0;
+  cursor: pointer;
+}
+
 .primary {
   width: 100%;
   height: 53px;
-  border: 0;
   background: var(--red);
   color: #fff;
   font-size: 16px;
   font-weight: 900;
-  cursor: pointer;
 }
 
 .link {
-  border: 0;
   background: transparent;
   color: var(--purple);
   font-size: 13px;
-  cursor: pointer;
 }
 
 .map-panel {
   display: grid;
-  place-items: center;
-  padding: 30px 34px 27px;
+  gap: 9px;
+  justify-items: stretch;
+  padding: 28px 34px 12px;
+}
+
+.brussels-map,
+.location-tools {
+  justify-self: center;
+  width: min(100%, 232px);
 }
 
 .brussels-map {
   position: relative;
   z-index: 1;
-  width: 100%;
   aspect-ratio: 1;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -283,14 +299,83 @@ input::placeholder {
   font-size: 8px;
 }
 
-.walk-marker {
+.walk-marker-shell {
+  cursor: grab;
+  touch-action: none;
+}
+
+.walk-marker-shell:active {
+  cursor: grabbing;
+}
+
+.walk-marker,
+.person-marker {
   display: block;
-  width: 20px;
-  height: 20px;
-  border: 3px solid var(--red);
   border-radius: 50%;
+}
+
+.walk-marker {
+  width: 26px;
+  height: 26px;
+  border: 3px solid var(--red);
   background: rgba(226, 97, 66, .85);
   box-shadow: 0 0 0 18px rgba(64, 145, 183, .26);
+  pointer-events: none;
+}
+
+.person-marker-shell {
+  pointer-events: none;
+}
+
+.person-marker {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #fff;
+  background: #4091b7;
+  box-shadow: 0 0 0 9px rgba(61, 64, 110, .22);
+}
+
+.location-tools {
+  display: grid;
+  gap: 8px;
+}
+
+.gps-button {
+  display: inline-grid;
+  grid-template-columns: 16px 1fr;
+  gap: 8px;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  background: var(--yellow);
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 900;
+  text-align: left;
+  cursor: pointer;
+}
+
+.gps-button span {
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(61, 64, 110, .18);
+}
+
+.gps-button:disabled {
+  cursor: wait;
+  opacity: .72;
+}
+
+.address-field span {
+  margin-bottom: 6px;
+}
+
+.address-field input {
+  height: 38px;
+  margin: 0;
 }
 
 .category-panel {
@@ -302,14 +387,19 @@ input::placeholder {
 }
 
 .category {
-  display: grid;
-  place-items: center;
   width: 70px;
   height: 70px;
   border: 1px solid var(--line);
   background: transparent;
-  color: #111;
   cursor: pointer;
+}
+
+.category::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 48px;
+  background: var(--category-icon) center / contain no-repeat;
 }
 
 .category.is-selected {
@@ -322,8 +412,6 @@ input::placeholder {
 
 .upload-box {
   position: relative;
-  display: grid;
-  place-items: center;
   width: 176px;
   height: 176px;
   margin: 0 0 26px 5px;
@@ -343,18 +431,21 @@ input::placeholder {
   opacity: 0;
 }
 
-.upload-box img {
+.upload-box img,
+.photo-card img {
   display: none;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.upload-box.has-photo span {
+.upload-box.has-photo span,
+.photo-card.has-photo span {
   display: none;
 }
 
-.upload-box.has-photo img {
+.upload-box.has-photo img,
+.photo-card.has-photo img {
   display: block;
 }
 
@@ -434,8 +525,6 @@ dd {
 }
 
 .photo-card {
-  display: grid;
-  place-items: center;
   width: 86px;
   height: 86px;
   overflow: hidden;
@@ -444,21 +533,6 @@ dd {
   font-weight: 900;
   line-height: 1.1;
   text-align: center;
-}
-
-.photo-card img {
-  display: none;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.photo-card.has-photo span {
-  display: none;
-}
-
-.photo-card.has-photo img {
-  display: block;
 }
 
 .impact-card {
@@ -484,10 +558,6 @@ dd {
   display: none;
 }
 
-.impact-map .leaflet-marker-icon {
-  pointer-events: none;
-}
-
 @media (max-height: 760px) {
   .phone {
     height: 100vh;
@@ -508,6 +578,30 @@ dd {
 
   .details-form {
     padding-top: 17px;
+  }
+
+  .map-panel {
+    gap: 8px;
+    padding: 26px 34px 10px;
+  }
+
+  .brussels-map,
+  .location-tools {
+    width: min(100%, 198px);
+  }
+
+  .gps-button {
+    min-height: 36px;
+    font-size: 12px;
+  }
+
+  .address-field span {
+    margin-bottom: 5px;
+  }
+
+  .map-panel .address-field input {
+    height: 36px;
+    margin-bottom: 0;
   }
 
   input[type="text"],
