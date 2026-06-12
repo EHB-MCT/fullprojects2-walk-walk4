@@ -5,9 +5,20 @@ const nameInput = document.querySelector("#nameInput");
 const emailInput = document.querySelector("#emailInput");
 const phoneInput = document.querySelector("#phoneInput");
 const updatesInput = document.querySelector("#updatesInput");
+const photoInput = document.querySelector("#photoInput");
+const photoPreview = document.querySelector("#photoPreview");
+const uploadBox = document.querySelector(".upload-box");
+const thanksName = document.querySelector("#thanksName");
+const summaryName = document.querySelector("#summaryName");
+const summaryType = document.querySelector("#summaryType");
+const summaryPhoto = document.querySelector("#summaryPhoto");
+const photoCard = document.querySelector(".photo-card");
 const brusselsCenter = [50.8467, 4.3525];
 
 let brusselsMap;
+let impactMap;
+let photoUrl = "";
+let selectedCategory = "Auto";
 
 function showScreen(name) {
   const targetScreen = screens.find((screen) => screen.dataset.screen === name);
@@ -23,6 +34,11 @@ function showScreen(name) {
   if (name === "location") {
     initBrusselsMap();
     window.setTimeout(() => brusselsMap?.invalidateSize(), 80);
+  }
+
+  if (name === "thanks") {
+    initImpactMap();
+    window.setTimeout(() => impactMap?.invalidateSize(), 80);
   }
 }
 
@@ -55,6 +71,35 @@ function initBrusselsMap() {
     .bindPopup("Brussel");
 }
 
+function initImpactMap() {
+  if (impactMap || !window.L) {
+    return;
+  }
+
+  impactMap = L.map("impactMap", {
+    center: brusselsCenter,
+    zoom: 12,
+    zoomControl: false,
+    attributionControl: false,
+    dragging: false,
+    scrollWheelZoom: false,
+    doubleClickZoom: false,
+    boxZoom: false,
+    keyboard: false,
+    tap: false,
+    touchZoom: false
+  });
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19
+  }).addTo(impactMap);
+
+  L.marker(brusselsCenter, {
+    icon: createWalkIcon(),
+    interactive: false
+  }).addTo(impactMap);
+}
+
 function createWalkIcon() {
   return L.divIcon({
     className: "",
@@ -78,10 +123,24 @@ function validateDetails() {
   return valid;
 }
 
+function updateSummary() {
+  const firstName = nameInput.value.trim().split(/\s+/)[0] || "Victor";
+
+  thanksName.textContent = firstName;
+  summaryName.textContent = firstName;
+  summaryType.textContent = selectedCategory;
+
+  if (photoUrl) {
+    summaryPhoto.src = photoUrl;
+    photoCard.classList.add("has-photo");
+  }
+}
+
 document.addEventListener("click", (event) => {
   const next = event.target.closest("[data-next]");
   const prev = event.target.closest("[data-prev]");
   const category = event.target.closest(".category");
+  const reset = event.target.closest("[data-reset]");
 
   if (category) {
     document.querySelectorAll(".category").forEach((button) => {
@@ -89,6 +148,7 @@ document.addEventListener("click", (event) => {
     });
 
     category.classList.add("is-selected");
+    selectedCategory = category.dataset.category;
   }
 
   if (next) {
@@ -96,11 +156,37 @@ document.addEventListener("click", (event) => {
       return;
     }
 
+    if (next.dataset.next === "thanks") {
+      updateSummary();
+    }
+
     showScreen(next.dataset.next);
   }
 
   if (prev) {
     showScreen(prev.dataset.prev);
+  }
+
+  if (reset) {
+    detailsForm.reset();
+    detailsError.classList.remove("is-visible");
+    photoInput.value = "";
+    photoPreview.removeAttribute("src");
+    summaryPhoto.removeAttribute("src");
+    uploadBox.classList.remove("has-photo");
+    photoCard.classList.remove("has-photo");
+
+    if (photoUrl) {
+      URL.revokeObjectURL(photoUrl);
+      photoUrl = "";
+    }
+
+    selectedCategory = "Auto";
+    document.querySelectorAll(".category").forEach((button) => {
+      button.classList.toggle("is-selected", button.dataset.category === "Auto");
+    });
+
+    showScreen("details");
   }
 });
 
@@ -110,4 +196,20 @@ document.addEventListener("click", (event) => {
       validateDetails();
     }
   });
+});
+
+photoInput.addEventListener("change", () => {
+  const file = photoInput.files[0];
+
+  if (!file) {
+    return;
+  }
+
+  if (photoUrl) {
+    URL.revokeObjectURL(photoUrl);
+  }
+
+  photoUrl = URL.createObjectURL(file);
+  photoPreview.src = photoUrl;
+  uploadBox.classList.add("has-photo");
 });

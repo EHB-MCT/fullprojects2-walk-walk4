@@ -177,12 +177,139 @@
       </section>
 
       <footer class="actions">
-        <button class="primary" type="button">
+        <button class="primary" type="button" data-next="proof">
           Bewijs toevoegen
         </button>
 
         <button class="link" type="button" data-prev="location">
           Terug
+        </button>
+      </footer>
+    </section>
+
+
+    <section class="screen" data-screen="proof">
+      <header class="topbar">
+        <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="Walk logo">
+      </header>
+
+      <div class="hero">
+        <h1>Dien een<br>foto in</h1>
+
+        <img
+          class="walker"
+          src="afbeeldingen/meisjewandeld.png"
+          alt=""
+        >
+
+        <img
+          class="scribble"
+          src="afbeeldingen/pijl.avif"
+          alt=""
+        >
+      </div>
+
+      <section class="panel proof-panel">
+        <label class="upload-box" for="photoInput">
+          <input
+            id="photoInput"
+            type="file"
+            accept="image/*"
+            capture="environment"
+          >
+          <img id="photoPreview" alt="">
+          <span>Voeg foto toe/ Maak foto</span>
+        </label>
+
+        <label class="extra-info" for="extraInput">
+          <span>extra info</span>
+          <input id="extraInput" type="text" placeholder="optioneel">
+        </label>
+      </section>
+
+      <footer class="actions">
+        <button class="primary" type="button" data-next="thanks">
+          Inzending bevestigen
+        </button>
+
+        <button class="link" type="button" data-prev="category">
+          Terug
+        </button>
+      </footer>
+    </section>
+
+
+    <section class="screen" data-screen="thanks">
+      <header class="topbar">
+        <img class="logo" src="afbeeldingen/Copy of logo_corail.png" alt="Walk logo">
+      </header>
+
+      <div class="hero compact">
+        <h1>
+          Bedankt <span id="thanksName">Victor</span>,<br>jouw melding<br>maakt verschil!
+        </h1>
+
+        <img
+          class="walker"
+          src="afbeeldingen/meisjewandeld.png"
+          alt=""
+        >
+
+        <img
+          class="scribble"
+          src="afbeeldingen/pijl.avif"
+          alt=""
+        >
+      </div>
+
+      <div class="thanks-stack">
+        <article class="white-card intro-card">
+          <p>
+            Bedankt om mee te helpen aan meer open en veiligere stoepen in Brussel.
+          </p>
+          <p>
+            Jouw melding is toegevoegd aan de kaart en telt mee in de cijfers van deze maand.
+          </p>
+        </article>
+
+        <article class="white-card summary-card">
+          <dl>
+            <div>
+              <dt>Naam:</dt>
+              <dd id="summaryName">Victor</dd>
+            </div>
+            <div>
+              <dt>Locatie:</dt>
+              <dd>Brussel</dd>
+            </div>
+            <div>
+              <dt>Type:</dt>
+              <dd id="summaryType">Auto</dd>
+            </div>
+          </dl>
+
+          <div class="photo-card">
+            <img id="summaryPhoto" alt="">
+            <span>Jouw foto<br>obstakel</span>
+          </div>
+        </article>
+
+        <article class="white-card impact-card">
+          <strong>
+            Jouw melding<br>staat er bij.<br>Samen maken we<br>Brussel<br>stap voor stap beter<br>bewandelbaar.
+          </strong>
+
+          <div
+            id="impactMap"
+            class="impact-map"
+            aria-label="Kaartfoto van Brussel"
+          ></div>
+        </article>
+      </div>
+
+      <footer class="actions">
+        <button class="primary" type="button" data-reset>
+          Nieuwe melding maken
         </button>
       </footer>
     </section>
