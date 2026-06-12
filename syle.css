@@ -402,6 +402,30 @@ input::placeholder {
   background: var(--category-icon) center / contain no-repeat;
 }
 
+.category[data-category="Auto"] {
+  --category-icon: url("afbeeldingen/iconen/auto.png");
+}
+
+.category[data-category="Step"] {
+  --category-icon: url("afbeeldingen/iconen/step.png");
+}
+
+.category[data-category="Vuilbak"] {
+  --category-icon: url("afbeeldingen/iconen/vuilbak.png");
+}
+
+.category[data-category="Afval"] {
+  --category-icon: url("afbeeldingen/iconen/afval.png");
+}
+
+.category[data-category="Bord"] {
+  --category-icon: url("afbeeldingen/iconen/bord.png");
+}
+
+.category[data-category="Terras"] {
+  --category-icon: url("afbeeldingen/iconen/terras.png");
+}
+
 .category.is-selected {
   outline: 3px solid rgba(226, 97, 66, .35);
 }

@@ -65,7 +65,6 @@ function renderCategories() {
       type="button"
       data-category="${category}"
       aria-label="${category}"
-      style="--category-icon:url(afbeeldingen/iconen/${category.toLowerCase()}.png)"
     ></button>
   `).join("");
 }
