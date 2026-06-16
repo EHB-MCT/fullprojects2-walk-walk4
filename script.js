@@ -16,15 +16,17 @@ renderCategories();
 const screens = $$(".screen");
 const [
   detailsForm, detailsError, nameInput, emailInput, phoneInput, updatesInput,
-  photoInput, photoPreview, thanksName, summaryName, summaryType,
+  anonymousInput, photoInput, photoPreview, thanksName, summaryName, summaryType,
   summaryLocation, summaryPhoto, addressInput, gpsButton
 ] = [
   "detailsForm", "detailsError", "nameInput", "emailInput", "phoneInput",
-  "updatesInput", "photoInput", "photoPreview", "thanksName", "summaryName",
-  "summaryType", "summaryLocation", "summaryPhoto", "addressInput", "gpsButton"
+  "updatesInput", "anonymousInput", "photoInput", "photoPreview", "thanksName",
+  "summaryName", "summaryType", "summaryLocation", "summaryPhoto", "addressInput",
+  "gpsButton"
 ].map((id) => $(`#${id}`));
 const [uploadBox, photoCard] = [".upload-box", ".photo-card"].map($);
-const detailInputs = [nameInput, emailInput, phoneInput, updatesInput];
+const contactInputs = [nameInput, emailInput, phoneInput, updatesInput];
+const detailInputs = [nameInput, emailInput, phoneInput];
 const brusselsCenter = [50.8467, 4.3525];
 const tileUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 const disabledMapOptions = Object.fromEntries(
@@ -243,6 +245,8 @@ function createMarkerIcon(className, iconSize) {
 }
 
 function validateDetails() {
+  setAnonymousMode();
+
   const valid = detailsForm.checkValidity();
 
   detailsError.classList.toggle("is-visible", !valid);
@@ -255,7 +259,9 @@ function validateDetails() {
 }
 
 function updateSummary() {
-  const firstName = nameInput.value.trim().split(/\s+/)[0] || "Victor";
+  const firstName = anonymousInput.checked
+    ? "Anoniem"
+    : nameInput.value.trim().split(/\s+/)[0] || "Victor";
 
   thanksName.textContent = firstName;
   summaryName.textContent = firstName;
@@ -266,6 +272,15 @@ function updateSummary() {
     summaryPhoto.src = photoUrl;
     photoCard.classList.add("has-photo");
   }
+}
+
+function setAnonymousMode() {
+  detailsForm.classList.toggle("is-anonymous", anonymousInput.checked);
+
+  contactInputs.forEach((input) => {
+    input.disabled = anonymousInput.checked;
+    input.toggleAttribute("aria-invalid", false);
+  });
 }
 
 function selectCategory(categoryName = defaultCategory) {
@@ -289,6 +304,7 @@ function clearPhoto() {
 
 function resetReport() {
   detailsForm.reset();
+  setAnonymousMode();
   detailsError.classList.remove("is-visible");
   clearPhoto();
   selectCategory();
@@ -333,8 +349,12 @@ document.addEventListener("click", (event) => {
   }
 });
 
-detailInputs.forEach((input) => {
+detailInputs.concat(anonymousInput).forEach((input) => {
   input.addEventListener("input", () => {
+    if (input === anonymousInput) {
+      setAnonymousMode();
+    }
+
     if (detailsError.classList.contains("is-visible")) {
       validateDetails();
     }

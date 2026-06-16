@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,700;6..12,800;6..12,900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-  <link rel="stylesheet" href="syle.css?v=3">
+  <link rel="stylesheet" href="syle.css?v=5">
 </head>
 <body>
   <main class="phone" aria-label="Walk melding formulier">
@@ -27,13 +27,17 @@
           <input id="phoneInput" name="phone" type="tel" placeholder="telefoonnumer" autocomplete="tel" required>
         </label>
         <label class="check-row" for="updatesInput">
-          <input id="updatesInput" name="updates" type="checkbox" required>
+          <input id="updatesInput" name="updates" type="checkbox">
           <span>Ik wil updates ontvangen over mijn melding.</span>
+        </label>
+        <label class="check-row anonymous-row" for="anonymousInput">
+          <input id="anonymousInput" name="anonymous" type="checkbox">
+          <span>Ik wil anoniem melden.</span>
         </label>
         <p class="error" id="detailsError">Vul alle gegevens in om verder te gaan.</p>
       </form>
       <footer class="actions">
-        <button class="primary" type="button" data-next="location">Locatie toevoegen</button>
+        <button class="primary" type="button" data-next="location">Volgende</button>
       </footer>
     </section>
 
@@ -49,7 +53,7 @@
         </div>
       </section>
       <footer class="actions">
-        <button class="primary" type="button" data-next="category">Soort obstakel</button>
+        <button class="primary" type="button" data-next="category">Volgende</button>
         <button class="link" type="button" data-prev="details">Terug</button>
       </footer>
     </section>
@@ -57,7 +61,7 @@
     <section class="screen" data-screen="category">
       <section class="panel category-panel" id="categoryPanel"></section>
       <footer class="actions">
-        <button class="primary" type="button" data-next="proof">Bewijs toevoegen</button>
+        <button class="primary" type="button" data-next="proof">Volgende</button>
         <button class="link" type="button" data-prev="location">Terug</button>
       </footer>
     </section>
@@ -75,7 +79,7 @@
         </label>
       </section>
       <footer class="actions">
-        <button class="primary" type="button" data-next="thanks">Inzending bevestigen</button>
+        <button class="primary" type="button" data-next="thanks">Volgende</button>
         <button class="link" type="button" data-prev="category">Terug</button>
       </footer>
     </section>
@@ -108,6 +112,6 @@
     </section>
   </main>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>
