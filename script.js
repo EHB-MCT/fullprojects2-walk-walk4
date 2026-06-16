@@ -41,10 +41,6 @@ let selectedLocation = [...brusselsCenter];
 
 function renderScreenChrome() {
   $$(".screen").forEach((screen) => {
-    if (screen.firstElementChild?.classList.contains("topbar")) {
-      return;
-    }
-
     const name = screen.dataset.screen;
 
     screen.insertAdjacentHTML("afterbegin", `
@@ -102,7 +98,7 @@ function initBrusselsMap() {
     return syncReportMarker();
   }
 
-  if (!$("#brusselsMap") || !window.L) {
+  if (!window.L) {
     return;
   }
 

@@ -4,7 +4,6 @@
   --red: #E26142;
   --paper: #F8F4EC;
   --line: #E8C994;
-  font-family: "GT Eesti Display", "Nunito Sans", Arial, sans-serif;
 }
 
 * {
@@ -589,10 +588,6 @@ dd {
   overflow: hidden;
   border-radius: 9px;
   background: #efead5;
-}
-
-.impact-map .leaflet-control-attribution {
-  display: none;
 }
 
 @media (max-height: 760px) {
