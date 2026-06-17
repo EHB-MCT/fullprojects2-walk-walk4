@@ -21,7 +21,7 @@ body {
   place-items: center;
   background: #e7e7e7;
   color: var(--purple);
-  font-family: "GT Eesti Display Regular", "GT Eesti Display", "Nunito Sans", Arial, sans-serif;
+  font-family: "Nunito Sans", Arial, sans-serif;
 }
 
 button,
