@@ -1,0 +1,123 @@
+.map-panel {
+  display: grid;
+  gap: 9px;
+  justify-items: stretch;
+  padding: 28px 34px 12px;
+}
+
+.brussels-map,
+.location-tools {
+  justify-self: center;
+  width: min(100%, 232px);
+}
+
+.brussels-map {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #f5f2e8;
+}
+
+.brussels-map .leaflet-control-zoom {
+  border: 1px solid var(--line);
+  box-shadow: none;
+}
+
+.brussels-map .leaflet-control-zoom a {
+  color: var(--purple);
+  font-family: "GT Eesti Display", "Nunito Sans", Arial, sans-serif;
+  font-weight: 900;
+}
+
+.brussels-map .leaflet-control-attribution {
+  font-size: 8px;
+}
+
+.walk-marker-shell {
+  cursor: grab;
+  touch-action: none;
+}
+
+.walk-marker-shell:active {
+  cursor: grabbing;
+}
+
+.walk-marker,
+.person-marker {
+  display: block;
+  border-radius: 50%;
+}
+
+.walk-marker {
+  width: 26px;
+  height: 26px;
+  border: 3px solid var(--red);
+  background: rgba(226, 97, 66, .85);
+  box-shadow: 0 0 0 18px rgba(64, 145, 183, .26);
+  pointer-events: none;
+}
+
+.person-marker-shell {
+  pointer-events: none;
+}
+
+.person-marker {
+  width: 18px;
+  height: 18px;
+  border: 3px solid #fff;
+  background: #4091b7;
+  box-shadow: 0 0 0 9px rgba(61, 64, 110, .22);
+}
+
+.location-tools {
+  display: grid;
+  gap: 8px;
+}
+
+.gps-button {
+  display: inline-grid;
+  grid-template-columns: 16px 1fr;
+  gap: 8px;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  background: var(--yellow);
+  color: var(--purple);
+  font-size: 13px;
+  font-weight: 900;
+  text-align: left;
+  cursor: pointer;
+}
+
+.gps-button span {
+  width: 14px;
+  height: 14px;
+  border: 3px solid var(--purple);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(61, 64, 110, .18);
+}
+
+.gps-button:disabled {
+  cursor: wait;
+  opacity: .72;
+}
+
+.address-field span {
+  margin-bottom: 6px;
+}
+
+.address-field input {
+  height: 38px;
+  margin: 0;
+}
+
+.impact-map {
+  position: relative;
+  height: 76px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #efead5;
+}

@@ -1,0 +1,40 @@
+:root {
+  --yellow: #FFE475;
+  --purple: #3D406E;
+  --red: #E26142;
+  --paper: #F8F4EC;
+  --line: #E8C994;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  display: grid;
+  place-items: center;
+  background: #e7e7e7;
+  color: var(--purple);
+  font-family: "GT Eesti Display Regular", "GT Eesti Display", "Nunito Sans", Arial, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.topbar,
+.category,
+.upload-box,
+.photo-card,
+.walk-marker-shell,
+.person-marker-shell {
+  display: grid;
+  place-items: center;
+}

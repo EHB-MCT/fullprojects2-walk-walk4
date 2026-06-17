@@ -4,7 +4,7 @@ const defaultCategory = "Auto";
 const categories = [defaultCategory, "Step", "Vuilbak", "Afval", "Bord", "Terras"];
 const screenTitles = {
   details: "Gegevens<br>registreren.",
-  location: "Duid de<br>locatie aan.",
+  location: "Duid locatie<br>van obstakel aan",
   category: "Kies een<br>categorie",
   proof: "Dien een<br>foto in",
   thanks: 'Bedankt <span id="thanksName">Victor</span>,<br>jouw melding<br>maakt verschil!'
@@ -307,6 +307,14 @@ function resetReport() {
   resetLocation();
   showScreen("details");
 }
+
+detailsForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+
+  if (validateDetails()) {
+    showScreen("location");
+  }
+});
 
 document.addEventListener("click", (event) => {
   const next = event.target.closest("[data-next]");

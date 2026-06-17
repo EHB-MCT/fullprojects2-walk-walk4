@@ -17,7 +17,7 @@ Walk Brussels is een eenvoudige mobiele webapp om een obstakel op de stoep te me
 ## Bestanden
 
 - `index.html`: de structuur van de pagina's.
-- `syle.css`: de styling en huisstijl.
+- `css/`: de styling, opgesplitst per onderdeel.
 - `script.js`: de interactie, kaart, formuliercontrole en navigatie.
 - `afbeeldingen/`: logo en illustraties.
 
@@ -28,4 +28,3 @@ Walk Brussels is een eenvoudige mobiele webapp om een obstakel op de stoep te me
 - Lettertype: Nunito Sans via Google Fonts.
 - Afbeeldingen: lokale bestanden in de map `afbeeldingen`.
 - gebruik gemaakt van chatgpt voor code kaart en gps locatie, debuggen en code herschrijven.
-

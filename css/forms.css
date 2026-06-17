@@ -1,0 +1,129 @@
+.details-form {
+  align-self: start;
+  padding: 20px 19px 16px;
+}
+
+label {
+  display: block;
+}
+
+label > span {
+  display: block;
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"] {
+  width: 100%;
+  height: 43px;
+  margin: 0 0 17px;
+  padding: 0 13px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: transparent;
+  color: var(--purple);
+  outline-color: var(--red);
+  font-size: 13px;
+}
+
+input::placeholder {
+  color: #8b817e;
+}
+
+.check-row {
+  display: grid;
+  grid-template-columns: 21px 1fr;
+  gap: 11px;
+  align-items: start;
+  margin-top: -2px;
+  color: #29292c;
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.check-row input {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border: 2px solid var(--red);
+  border-radius: 4px;
+  background: transparent;
+}
+
+.check-row input:checked {
+  background: var(--red);
+  box-shadow: inset 0 0 0 4px var(--paper);
+}
+
+.anonymous-row {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.details-form.is-anonymous label:not(.anonymous-row) {
+  opacity: .48;
+}
+
+.details-form.is-anonymous input:disabled {
+  cursor: not-allowed;
+}
+
+.error {
+  display: none;
+  margin: 10px 0 0;
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.error.is-visible {
+  display: block;
+}
+
+.proof-panel {
+  padding: 25px 16px 48px;
+}
+
+.upload-box {
+  position: relative;
+  width: 176px;
+  height: 176px;
+  margin: 0 0 26px 5px;
+  border: 1px solid var(--line);
+  color: var(--purple);
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.upload-box input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.upload-box img {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-box.has-photo span {
+  display: none;
+}
+
+.upload-box.has-photo img {
+  display: block;
+}
+
+.extra-info input {
+  margin-bottom: 0;
+}

@@ -1,0 +1,148 @@
+.phone {
+  position: relative;
+  width: min(100vw, 390px);
+  height: min(100vh, 820px);
+  min-height: 720px;
+  overflow: hidden;
+  background: var(--yellow);
+}
+
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  grid-template-rows: 68px 185px 1fr auto;
+  min-height: 100%;
+  background: var(--yellow);
+  --bar-w: 74px;
+  --walker-x: 28px;
+  --walker-y: -28px;
+}
+
+.screen.is-active {
+  display: grid;
+}
+
+.screen[data-screen="location"] {
+  --bar-w: 132px;
+  --walker-x: 78px;
+}
+
+.screen[data-screen="category"] {
+  --bar-w: 176px;
+  --walker-x: 122px;
+}
+
+.screen[data-screen="proof"] {
+  --bar-w: 222px;
+  --walker-x: 170px;
+}
+
+.screen[data-screen="thanks"] {
+  --bar-w: 100%;
+  --walker-x: 250px;
+  --walker-y: -28px;
+}
+
+.topbar {
+  background: var(--paper);
+}
+
+.logo {
+  width: 95px;
+  height: auto;
+  display: block;
+}
+
+.hero {
+  position: relative;
+  padding: 18px 24px 0;
+  overflow: visible;
+}
+
+.hero h1 {
+  position: relative;
+  z-index: 6;
+  max-width: 300px;
+  margin: 0;
+  color: var(--purple);
+  font-family: "GT Eesti Display UltraBold", "GT Eesti Display", "Nunito Sans", Arial, sans-serif;
+  font-size: 32px;
+  line-height: 1.14;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.hero.compact h1 {
+  font-size: 29px;
+}
+
+.walker {
+  position: absolute;
+  z-index: 7;
+  left: calc(var(--walker-x) - 12px);
+  bottom: calc(var(--walker-y) + 5px);
+  width: 94px;
+  height: auto;
+  pointer-events: none;
+}
+
+.scribble {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: -18px;
+  width: 160px;
+  height: 180px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.panel {
+  position: relative;
+  z-index: 4;
+  width: calc(100% - 54px);
+  margin: 0 auto;
+  overflow: hidden;
+  background: var(--paper);
+  border-radius: 24px 24px 0 0;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--bar-w);
+  height: 11px;
+  background: var(--red);
+  border-radius: 24px 0 0 0;
+}
+
+.actions {
+  display: grid;
+  gap: 8px;
+  width: calc(100% - 48px);
+  margin: 22px auto 10px;
+}
+
+.primary,
+.link {
+  border: 0;
+  cursor: pointer;
+}
+
+.primary {
+  width: 100%;
+  height: 53px;
+  background: var(--red);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.link {
+  background: transparent;
+  color: var(--purple);
+  font-size: 13px;
+}

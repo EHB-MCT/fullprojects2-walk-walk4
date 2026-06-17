@@ -1,0 +1,57 @@
+@media (max-height: 760px) {
+  .phone {
+    height: 100vh;
+    min-height: 660px;
+  }
+
+  .screen {
+    grid-template-rows: 62px 168px 1fr auto;
+  }
+
+  .hero h1 {
+    font-size: 29px;
+  }
+
+  .panel {
+    width: calc(100% - 48px);
+  }
+
+  .thanks-stack {
+    width: calc(100% - 48px);
+  }
+
+  .details-form {
+    padding-top: 17px;
+  }
+
+  .map-panel {
+    gap: 8px;
+    padding: 26px 34px 10px;
+  }
+
+  .brussels-map,
+  .location-tools {
+    width: min(100%, 198px);
+  }
+
+  .gps-button {
+    min-height: 36px;
+    font-size: 12px;
+  }
+
+  .address-field span {
+    margin-bottom: 5px;
+  }
+
+  .map-panel .address-field input {
+    height: 36px;
+    margin-bottom: 0;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"] {
+    height: 39px;
+    margin-bottom: 13px;
+  }
+}
