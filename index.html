@@ -143,10 +143,55 @@
 					</label>
 				</section>
 				<footer class="actions">
-					<button class="primary" type="button" data-next="thanks">
+					<button class="primary" type="button" data-next="review">
 						Volgende
 					</button>
 					<button class="link" type="button" data-prev="category">Terug</button>
+				</footer>
+			</section>
+
+			<section class="screen" data-screen="review">
+				<div class="thanks-stack review-stack">
+					<article class="white-card intro-card">
+						<p>Controleer je melding voor je ze doorstuurt.</p>
+						<p>Zie je iets dat niet klopt? Pas het hieronder nog snel aan.</p>
+					</article>
+					<article class="white-card summary-card review-card">
+						<dl>
+							<div>
+								<dt>Naam:</dt>
+								<dd id="reviewName">Victor</dd>
+							</div>
+							<div>
+								<dt>Locatie:</dt>
+								<dd id="reviewLocation">Brussel</dd>
+							</div>
+							<div>
+								<dt>Type:</dt>
+								<dd id="reviewType">Geen categorie gekozen</dd>
+							</div>
+							<div>
+								<dt>Extra:</dt>
+								<dd id="reviewExtra">Geen extra info</dd>
+							</div>
+						</dl>
+						<div class="photo-card" id="reviewPhotoCard">
+							<img id="reviewPhoto" alt="" />
+							<span>Jouw foto<br />obstakel</span>
+						</div>
+					</article>
+					<article class="white-card review-actions">
+						<button type="button" data-prev="details">Wijzig naam</button>
+						<button type="button" data-prev="location">Wijzig locatie</button>
+						<button type="button" data-prev="category">Wijzig type</button>
+						<button type="button" data-prev="proof">Wijzig foto</button>
+					</article>
+				</div>
+				<footer class="actions">
+					<button class="primary" type="button" data-next="thanks">
+						Melding versturen
+					</button>
+					<button class="link" type="button" data-prev="proof">Terug</button>
 				</footer>
 			</section>
 
@@ -177,7 +222,7 @@
 								<dd id="summaryType">Auto</dd>
 							</div>
 						</dl>
-						<div class="photo-card">
+						<div class="photo-card" id="summaryPhotoCard">
 							<img id="summaryPhoto" alt="" />
 							<span>Jouw foto<br />obstakel</span>
 						</div>

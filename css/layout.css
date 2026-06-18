@@ -38,6 +38,11 @@
   --walker-x: 170px;
 }
 
+.screen[data-screen="review"] {
+  --bar-w: 274px;
+  --walker-x: 216px;
+}
+
 .screen[data-screen="thanks"] {
   --bar-w: 100%;
   --walker-x: 250px;

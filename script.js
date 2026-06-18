@@ -20,6 +20,7 @@ const screenTitles = {
   location: "Duid locatie<br>van obstakel aan",
   category: "Kies een<br>categorie",
   proof: "Dien een<br>foto in",
+  review: "Controleer<br>je melding",
   thanks: 'Bedankt <span id="thanksName">Victor</span>,<br>jouw melding<br>maakt verschil!'
 };
 
@@ -30,14 +31,18 @@ const screens = $$(".screen");
 const [
   detailsForm, detailsError, nameInput, emailInput, phoneInput, updatesInput,
   anonymousInput, photoInput, photoPreview, thanksName, summaryName, summaryType,
-  summaryLocation, summaryPhoto, addressInput, gpsButton
+  summaryLocation, summaryPhoto, addressInput, gpsButton, extraInput, reviewName,
+  reviewType, reviewLocation, reviewExtra, reviewPhoto
 ] = [
   "detailsForm", "detailsError", "nameInput", "emailInput", "phoneInput",
   "updatesInput", "anonymousInput", "photoInput", "photoPreview", "thanksName",
   "summaryName", "summaryType", "summaryLocation", "summaryPhoto", "addressInput",
-  "gpsButton"
+  "gpsButton", "extraInput", "reviewName", "reviewType", "reviewLocation",
+  "reviewExtra", "reviewPhoto"
 ].map((id) => $(`#${id}`));
-const [uploadBox, photoCard] = [".upload-box", ".photo-card"].map($);
+const [uploadBox, reviewPhotoCard, summaryPhotoCard] = [
+  ".upload-box", "#reviewPhotoCard", "#summaryPhotoCard"
+].map($);
 const contactInputs = [nameInput, emailInput, phoneInput, updatesInput];
 const detailInputs = [nameInput, emailInput, phoneInput];
 const brusselsCenter = [50.8467, 4.3525];
@@ -275,19 +280,48 @@ function validateDetails() {
 }
 
 function updateSummary() {
-  const firstName = anonymousInput.checked
-    ? "Anoniem"
-    : nameInput.value.trim().split(/\s+/)[0] || "Victor";
+  const report = getReportOverview();
 
-  thanksName.textContent = firstName;
-  summaryName.textContent = firstName;
-  summaryType.textContent = selectedCategories.join(", ") || "Geen categorie gekozen";
-  summaryLocation.textContent = addressInput.value.trim() || "Brussel";
+  thanksName.textContent = report.firstName;
+  summaryName.textContent = report.name;
+  summaryType.textContent = report.type;
+  summaryLocation.textContent = report.location;
 
   if (photoUrl) {
     summaryPhoto.src = photoUrl;
-    photoCard.classList.add("has-photo");
+    summaryPhotoCard.classList.add("has-photo");
   }
+}
+
+function updateReview() {
+  const report = getReportOverview();
+
+  reviewName.textContent = report.name;
+  reviewType.textContent = report.type;
+  reviewLocation.textContent = report.location;
+  reviewExtra.textContent = report.extra;
+
+  if (photoUrl) {
+    reviewPhoto.src = photoUrl;
+    reviewPhotoCard.classList.add("has-photo");
+  } else {
+    reviewPhoto.removeAttribute("src");
+    reviewPhotoCard.classList.remove("has-photo");
+  }
+}
+
+function getReportOverview() {
+  const name = anonymousInput.checked
+    ? "Anoniem"
+    : nameInput.value.trim() || "Victor";
+
+  return {
+    firstName: anonymousInput.checked ? "Anoniem" : name.split(/\s+/)[0],
+    name,
+    type: selectedCategories.join(", ") || "Geen categorie gekozen",
+    location: addressInput.value.trim() || "Brussel",
+    extra: extraInput.value.trim() || "Geen extra info"
+  };
 }
 
 function setAnonymousMode() {
@@ -325,8 +359,10 @@ function syncSelectedCategories() {
 
 function clearPhoto() {
   photoInput.value = "";
-  [photoPreview, summaryPhoto].forEach((image) => image.removeAttribute("src"));
-  [uploadBox, photoCard].forEach((element) => element.classList.remove("has-photo"));
+  [photoPreview, reviewPhoto, summaryPhoto].forEach((image) => image.removeAttribute("src"));
+  [uploadBox, reviewPhotoCard, summaryPhotoCard].forEach((element) => {
+    element.classList.remove("has-photo");
+  });
 
   if (photoUrl) {
     URL.revokeObjectURL(photoUrl);
@@ -375,6 +411,10 @@ document.addEventListener("click", (event) => {
 
     if (next.dataset.next === "thanks") {
       updateSummary();
+    }
+
+    if (next.dataset.next === "review") {
+      updateReview();
     }
 
     showScreen(next.dataset.next);

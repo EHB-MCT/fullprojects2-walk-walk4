@@ -20,6 +20,15 @@
   border-radius: 24px 24px 0 0;
 }
 
+.review-stack {
+  background: var(--paper);
+}
+
+.review-stack::before {
+  width: var(--bar-w);
+  border-radius: 24px 0 0 0;
+}
+
 .white-card {
   position: relative;
   background: var(--paper);
@@ -48,6 +57,10 @@
   min-height: 96px;
   padding: 14px 13px 10px 20px;
   font-size: 12px;
+}
+
+.review-card {
+  min-height: 142px;
 }
 
 dl {
@@ -104,4 +117,22 @@ dd {
   padding: 15px 17px 13px 20px;
   font-size: 12px;
   line-height: 1.08;
+}
+
+.review-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  padding: 1px;
+  background: var(--line);
+}
+
+.review-actions button {
+  min-height: 42px;
+  border: 0;
+  background: var(--paper);
+  color: var(--purple);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
 }
