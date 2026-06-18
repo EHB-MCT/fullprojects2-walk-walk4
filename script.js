@@ -1,10 +1,20 @@
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
-const categories = Array.from({ length: 13 }, (_, index) => ({
-  name: `Categorie ${index + 1}`,
-  icon: `afbeeldingen/iconen/categorie-${String(index + 1).padStart(2, "0")}.png`
-}));
-const defaultCategory = categories[0].name;
+const categories = [
+  { name: "Paaltje", icon: "afbeeldingen/iconen/categorie-01.png" },
+  { name: "Paal", icon: "afbeeldingen/iconen/categorie-02.png" },
+  { name: "Bord", icon: "afbeeldingen/iconen/categorie-03.png" },
+  { name: "Waarschuwingsbord", icon: "afbeeldingen/iconen/categorie-04.png" },
+  { name: "Terras", icon: "afbeeldingen/iconen/categorie-05.png" },
+  { name: "Hek", icon: "afbeeldingen/iconen/categorie-06.png" },
+  { name: "Auto", icon: "afbeeldingen/iconen/categorie-07.png" },
+  { name: "Scooter", icon: "afbeeldingen/iconen/categorie-08.png" },
+  { name: "Vuilniszak", icon: "afbeeldingen/iconen/categorie-09.png" },
+  { name: "Reclamebord", icon: "afbeeldingen/iconen/categorie-10.png" },
+  { name: "Laadpaal", icon: "afbeeldingen/iconen/categorie-11.png" },
+  { name: "Step", icon: "afbeeldingen/iconen/categorie-12.png" },
+  { name: "Verkeersbord", icon: "afbeeldingen/iconen/categorie-13.png" }
+];
 const screenTitles = {
   details: "Gegevens<br>registreren.",
   location: "Duid locatie<br>van obstakel aan",
@@ -39,7 +49,7 @@ const disabledMapOptions = Object.fromEntries(
 
 let brusselsMap, impactMap, reportMarker, userLocationMarker, impactMarker;
 let photoUrl = "";
-let selectedCategories = [defaultCategory];
+let selectedCategories = [];
 let selectedLocation = [...brusselsCenter];
 
 function renderScreenChrome() {
@@ -64,11 +74,11 @@ function renderCategories() {
     <div class="category-list">
       ${categories.map((category) => `
         <button
-          class="category${category.name === defaultCategory ? " is-selected" : ""}"
+          class="category"
           type="button"
           data-category="${category.name}"
           aria-label="${category.name}"
-          aria-pressed="${category.name === defaultCategory}"
+          aria-pressed="false"
         >
           <img src="${category.icon}" alt="">
         </button>
@@ -271,7 +281,7 @@ function updateSummary() {
 
   thanksName.textContent = firstName;
   summaryName.textContent = firstName;
-  summaryType.textContent = selectedCategories.join(", ");
+  summaryType.textContent = selectedCategories.join(", ") || "Geen categorie gekozen";
   summaryLocation.textContent = addressInput.value.trim() || "Brussel";
 
   if (photoUrl) {
@@ -290,7 +300,7 @@ function setAnonymousMode() {
 }
 
 function resetCategories() {
-  selectedCategories = [defaultCategory];
+  selectedCategories = [];
   syncSelectedCategories();
 }
 
@@ -299,10 +309,6 @@ function toggleCategory(categoryName) {
     selectedCategories = selectedCategories.filter((category) => category !== categoryName);
   } else {
     selectedCategories.push(categoryName);
-  }
-
-  if (!selectedCategories.length) {
-    selectedCategories = [categoryName];
   }
 
   syncSelectedCategories();
