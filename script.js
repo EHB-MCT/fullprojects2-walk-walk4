@@ -60,17 +60,21 @@ function renderScreenChrome() {
 }
 
 function renderCategories() {
-  $("#categoryPanel").innerHTML = categories.map((category) => `
-    <button
-      class="category${category.name === defaultCategory ? " is-selected" : ""}"
-      type="button"
-      data-category="${category.name}"
-      aria-label="${category.name}"
-      aria-pressed="${category.name === defaultCategory}"
-    >
-      <img src="${category.icon}" alt="">
-    </button>
-  `).join("");
+  $("#categoryPanel").innerHTML = `
+    <div class="category-list">
+      ${categories.map((category) => `
+        <button
+          class="category${category.name === defaultCategory ? " is-selected" : ""}"
+          type="button"
+          data-category="${category.name}"
+          aria-label="${category.name}"
+          aria-pressed="${category.name === defaultCategory}"
+        >
+          <img src="${category.icon}" alt="">
+        </button>
+      `).join("")}
+    </div>
+  `;
 }
 
 function showScreen(name) {
