@@ -99,9 +99,14 @@ function showScreen(name) {
     return;
   }
 
+  const currentWalker = $(".screen.is-active .walker");
+  const previousWalkerRect = currentWalker?.getBoundingClientRect();
+
   screens.forEach((screen) => {
     screen.classList.toggle("is-active", screen === targetScreen);
   });
+
+  animateWalker(targetScreen, previousWalkerRect);
 
   if (name === "location") {
     initBrusselsMap();
@@ -112,6 +117,30 @@ function showScreen(name) {
     initImpactMap();
     invalidateMap(impactMap);
   }
+}
+
+function animateWalker(targetScreen, previousWalkerRect) {
+  const walker = targetScreen.querySelector(".walker");
+
+  if (!walker || !previousWalkerRect || !walker.animate) {
+    return;
+  }
+
+  const nextWalkerRect = walker.getBoundingClientRect();
+  const moveX = previousWalkerRect.left - nextWalkerRect.left;
+  const moveY = previousWalkerRect.top - nextWalkerRect.top;
+
+  if (Math.abs(moveX) < 1 && Math.abs(moveY) < 1) {
+    return;
+  }
+
+  walker.animate([
+    { transform: `translate(${moveX}px, ${moveY}px)` },
+    { transform: "translate(0, 0)" }
+  ], {
+    duration: 420,
+    easing: "cubic-bezier(.22, 1, .36, 1)"
+  });
 }
 
 function invalidateMap(map) {

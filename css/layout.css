@@ -89,6 +89,7 @@
   bottom: calc(var(--walker-y) + 5px);
   width: 94px;
   height: auto;
+  will-change: transform;
   pointer-events: none;
 }
 
