@@ -1,12 +1,16 @@
 .category-panel {
   display: grid;
   grid-template-columns: repeat(2, 68px);
+  align-content: start;
   justify-content: center;
   gap: 25px 56px;
   padding: 36px 0 38px;
+  overflow-y: auto;
 }
 
 .category {
+  display: grid;
+  place-items: center;
   width: 70px;
   height: 70px;
   border: 1px solid var(--line);
@@ -14,36 +18,11 @@
   cursor: pointer;
 }
 
-.category::before {
-  content: "";
+.category img {
   display: block;
   width: 48px;
   height: 48px;
-  background: var(--category-icon) center / contain no-repeat;
-}
-
-.category[data-category="Auto"] {
-  --category-icon: url("../afbeeldingen/iconen/auto.png");
-}
-
-.category[data-category="Step"] {
-  --category-icon: url("../afbeeldingen/iconen/step.png");
-}
-
-.category[data-category="Vuilbak"] {
-  --category-icon: url("../afbeeldingen/iconen/vuilbak.png");
-}
-
-.category[data-category="Afval"] {
-  --category-icon: url("../afbeeldingen/iconen/afval.png");
-}
-
-.category[data-category="Bord"] {
-  --category-icon: url("../afbeeldingen/iconen/bord.png");
-}
-
-.category[data-category="Terras"] {
-  --category-icon: url("../afbeeldingen/iconen/terras.png");
+  object-fit: contain;
 }
 
 .category.is-selected {

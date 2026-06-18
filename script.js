@@ -1,7 +1,10 @@
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
-const defaultCategory = "Auto";
-const categories = [defaultCategory, "Step", "Vuilbak", "Afval", "Bord", "Terras"];
+const categories = Array.from({ length: 13 }, (_, index) => ({
+  name: `Categorie ${index + 1}`,
+  icon: `afbeeldingen/iconen/categorie-${String(index + 1).padStart(2, "0")}.png`
+}));
+const defaultCategory = categories[0].name;
 const screenTitles = {
   details: "Gegevens<br>registreren.",
   location: "Duid locatie<br>van obstakel aan",
@@ -36,7 +39,7 @@ const disabledMapOptions = Object.fromEntries(
 
 let brusselsMap, impactMap, reportMarker, userLocationMarker, impactMarker;
 let photoUrl = "";
-let selectedCategory = defaultCategory;
+let selectedCategories = [defaultCategory];
 let selectedLocation = [...brusselsCenter];
 
 function renderScreenChrome() {
@@ -59,11 +62,14 @@ function renderScreenChrome() {
 function renderCategories() {
   $("#categoryPanel").innerHTML = categories.map((category) => `
     <button
-      class="category${category === defaultCategory ? " is-selected" : ""}"
+      class="category${category.name === defaultCategory ? " is-selected" : ""}"
       type="button"
-      data-category="${category}"
-      aria-label="${category}"
-    ></button>
+      data-category="${category.name}"
+      aria-label="${category.name}"
+      aria-pressed="${category.name === defaultCategory}"
+    >
+      <img src="${category.icon}" alt="">
+    </button>
   `).join("");
 }
 
@@ -261,7 +267,7 @@ function updateSummary() {
 
   thanksName.textContent = firstName;
   summaryName.textContent = firstName;
-  summaryType.textContent = selectedCategory;
+  summaryType.textContent = selectedCategories.join(", ");
   summaryLocation.textContent = addressInput.value.trim() || "Brussel";
 
   if (photoUrl) {
@@ -279,11 +285,31 @@ function setAnonymousMode() {
   });
 }
 
-function selectCategory(categoryName = defaultCategory) {
-  selectedCategory = categoryName;
+function resetCategories() {
+  selectedCategories = [defaultCategory];
+  syncSelectedCategories();
+}
 
+function toggleCategory(categoryName) {
+  if (selectedCategories.includes(categoryName)) {
+    selectedCategories = selectedCategories.filter((category) => category !== categoryName);
+  } else {
+    selectedCategories.push(categoryName);
+  }
+
+  if (!selectedCategories.length) {
+    selectedCategories = [categoryName];
+  }
+
+  syncSelectedCategories();
+}
+
+function syncSelectedCategories() {
   $$(".category").forEach((button) => {
-    button.classList.toggle("is-selected", button.dataset.category === categoryName);
+    const isSelected = selectedCategories.includes(button.dataset.category);
+
+    button.classList.toggle("is-selected", isSelected);
+    button.setAttribute("aria-pressed", isSelected);
   });
 }
 
@@ -303,7 +329,7 @@ function resetReport() {
   setAnonymousMode();
   detailsError.classList.remove("is-visible");
   clearPhoto();
-  selectCategory();
+  resetCategories();
   resetLocation();
   showScreen("details");
 }
@@ -329,7 +355,7 @@ document.addEventListener("click", (event) => {
   }
 
   if (category) {
-    selectCategory(category.dataset.category);
+    toggleCategory(category.dataset.category);
   }
 
   if (next) {
